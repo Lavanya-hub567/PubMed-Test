@@ -1,68 +1,45 @@
-# PubMed Fetcher Project Report
+# Project Report: PubMed Fetcher
 
-## 1. Introduction
-The PubMed Fetcher project is designed to interact with the PubMed API to retrieve research paper details based on user queries. The tool allows fetching PubMed IDs, retrieving detailed paper metadata, and saving the results to a CSV file. This solution is intended for researchers, academics, and professionals who need to access PubMed data efficiently.
+## Project Overview
+The PubMed Fetcher project is a Python-based tool designed to interact with the PubMed API to search for academic-affiliated research papers based on a user-defined query. The tool fetches detailed information about relevant publications and allows the user to either display the results on the console or save them as a CSV file. The program specifically filters the results to include only those affiliated with academic institutions such as universities, colleges, research institutes, and similar entities.
 
-## 2. Objective
-The main objective of this project is to provide a simple and effective method to search PubMed, retrieve relevant research papers, and export them for offline analysis or further use.
+## Key Features
+- Fetches up to 500 relevant PubMed articles per search query.
+- Filters papers to include only those from academic-affiliated institutions.
+- Displays results in the console or saves them as a CSV file.
+- Uses robust error handling and logging for reliability.
+- Implements retry logic with exponential backoff to handle API request failures.
 
-## 3. Approach
-The project comprises two main components:
-1. **Main Script (`main.py`)**: Manages user input, fetches data, and handles output options (console or CSV file).
-2. **Helper Module (`pubmed_fetcher.py`)**: Contains functions to interact with the PubMed API, fetch data in batches, and save results.
+## Methodology
+1. **Search Query Input:** The program prompts the user to enter a search term and an optional filename for CSV output.
+2. **Fetching PubMed IDs:** It sends a request to the PubMed API to retrieve unique article IDs matching the query.
+3. **Batch Processing:** Article IDs are processed in batches to avoid request overloads.
+4. **Filtering Academic Papers:** The program filters articles based on the 'Company' or 'Source' field, checking for keywords associated with academic institutions.
+5. **Data Output:** The results are either displayed on the console or saved as a CSV file with fields including PubMed ID, Title, Publication Date, Authors, and Affiliation.
 
-### 3.1 API Integration
-- Utilized **NCBI's E-utilities**: The `esearch` endpoint to get PubMed IDs and the `esummary` endpoint to fetch detailed metadata.
-- Implemented **requests session with retries** using `HTTPAdapter` and `Retry` from the `requests` library.
-- Configured a maximum of 5 retries with exponential backoff to handle transient errors (502, 503, 504).
+## Technical Implementation
+- **Programming Language:** Python
+- **Libraries Used:**
+  - `requests` for API calls
+  - `csv` for file handling
+  - `logging` for system logging
+  - `time` for managing request delays
+  - `requests.adapters` for retry strategies
 
-### 3.2 Data Fetching Strategy
-- Batched requests in groups of 100 IDs to avoid rate limiting and manage large datasets.
-- Introduced a **1-second delay** between requests using `time.sleep` to further reduce API load.
-- Handled empty responses and request exceptions gracefully with error logging.
+## Challenges and Solutions
+- **Rate Limiting:** Introduced a delay (`time.sleep(1)`) between batch requests to avoid being blocked by the API.
+- **Request Failures:** Implemented a retry strategy using `HTTPAdapter` and `Retry` from `requests.adapters`.
+- **Filtering for Academic Papers:** Created a list of keywords (`ACADEMIC_KEYWORDS`) to identify academic institutions from the 'source' field of the API response.
 
-### 3.3 Data Handling
-- Extracted relevant fields including Title, Publication Date, Authors, and Source.
-- Handled missing data with `'N/A'` defaults.
-- Allowed data output either to the console or to a CSV file using the `csv` module.
+## Results
+The program successfully extracts academic-affiliated papers from PubMed and outputs them in the desired format. It ensures reliability through error handling and logging, and the filtering mechanism effectively narrows down results to academically relevant content.
 
-## 4. Methodology
-1. **Fetching PubMed IDs:**
-   - Input: User search query.
-   - Output: List of relevant PubMed IDs.
+## Future Improvements
+- Enhance the filtering logic to support more complex patterns and improve accuracy.
+- Add a graphical user interface (GUI) for easier use.
+- Enable support for more output formats, such as JSON or Excel files.
+- Introduce advanced search features like date range filtering and sorting options.
 
-2. **Fetching Paper Details:**
-   - Input: List of PubMed IDs.
-   - Output: List of dictionaries containing paper details.
-   - Batch processing to handle up to 500 IDs per query safely.
-
-3. **Saving to CSV:**
-   - Input: Filename and data.
-   - Output: CSV file with structured paper metadata.
-
-## 5. Results
-- The script successfully fetched research papers based on a variety of test queries.
-- Demonstrated robustness by handling network errors and avoiding API rate limits.
-- The CSV export functionality allowed easy data storage and offline use.
-
-## 6. Challenges
-- **API Rate Limiting:** Addressed by implementing delays and request retries.
-- **Data Quality:** Handled missing data with default values.
-- **Error Handling:** Improved resilience through try-except blocks and informative logging.
-
-## 7. Conclusion
-The PubMed Fetcher tool is a valuable resource for efficiently accessing and exporting PubMed data. With robust error handling, batch processing, and flexible output options, it provides a practical solution for research needs. Future improvements could include support for advanced query parameters, multi-threading for faster data retrieval, and a graphical user interface (GUI).
-
-## 8. Future Improvements
-- **Asynchronous Requests:** To improve performance on large datasets.
-- **User Interface:** Adding a GUI or web interface for non-technical users.
-- **Advanced Search Options:** Support for Boolean operators and filters in search queries.
-- **Data Visualization:** Adding basic analytics or visualization features for the fetched data.
-
-## 9. References
-- NCBI E-utilities documentation: https://www.ncbi.nlm.nih.gov/books/NBK25501/
-- Requests library documentation: https://docs.python-requests.org/en/latest/
-
----
-End of Report
+## Conclusion
+The PubMed Fetcher project provides a robust and effective solution for researchers and academics to gather relevant literature from PubMed efficiently. The targeted filtering of academic institutions ensures the integrity and relevance of the fetched data, making this tool a valuable resource for research purposes.
 
