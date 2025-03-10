@@ -37,8 +37,7 @@ The program successfully extracts academic-affiliated papers from PubMed and out
 ## Future Improvements
 - Enhance the filtering logic to support more complex patterns and improve accuracy.
 - Add a graphical user interface (GUI) for easier use.
-- Enable support for more output formats, such as JSON or Excel files.
-- Introduce advanced search features like date range filtering and sorting options.
+
 
 ## Conclusion
 The PubMed Fetcher project provides a robust and effective solution for researchers and academics to gather relevant literature from PubMed efficiently. The targeted filtering of academic institutions ensures the integrity and relevance of the fetched data, making this tool a valuable resource for research purposes.
